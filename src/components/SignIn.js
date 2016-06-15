@@ -94,7 +94,7 @@ module.exports = React.createClass({
         this.props.navigator.push({
           name: 'home',
           uid: this.state.userData.uid,
-          email: userData.auth.token.email
+          email: userData.auth.token.email // or this.state.email
         })
       }
     }.bind(this))
@@ -127,7 +127,7 @@ module.exports = React.createClass({
         this.props.navigator.push({
           name: 'home',
           uid: this.state.userData.uid,
-          email: userData.auth.token.email
+          email: this.state.email
         })
       }
     }.bind(this))
