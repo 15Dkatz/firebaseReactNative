@@ -16,7 +16,7 @@ let ref = new Firebase("https://reactfireitems.firebaseio.com/");
 module.exports = React.createClass({
   getInitialState() {
     return {
-      result: '...',
+      result: '',
       email: '',
       password: '',
       userData: {}
@@ -76,6 +76,9 @@ module.exports = React.createClass({
 
   // unfortunately you cannot pass objects as React child so you must pass each
   // key that you need from userData individually
+
+  // any defined key in props.navigator.push will then be available in route.{key} in main.js navigator
+
   signIn() {
     console.log('email:', this.state.email, 'password:', this.state.password);
     ref.authWithPassword({
@@ -87,7 +90,6 @@ module.exports = React.createClass({
         this.setState({result: "Login Failed:" + error});
       } else {
         console.log("Authenticated Successfully: ", userData);
-        this.setState({result: "userId: " + userData.uid});
         this.setState({userData})
         this.props.navigator.push({
           name: 'home',
@@ -121,7 +123,6 @@ module.exports = React.createClass({
         }
       } else {
         console.log("Successfully created user account:", userData)
-        this.setState({result: "uid: " + userData.uid})
         this.setState({userData})
         this.props.navigator.push({
           name: 'home',
