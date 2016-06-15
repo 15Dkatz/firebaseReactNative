@@ -16,6 +16,12 @@ module.exports = React.createClass({
           <Text style={styles.middleFont}>
             Home page
           </Text>
+          <Text style={styles.middleFont}>
+            UserId: {this.props.uid}
+          </Text>
+          <Text style={styles.middleFont}>
+            Email: {this.props.email}
+          </Text>
         </View>
       </View>
     );
@@ -25,7 +31,8 @@ module.exports = React.createClass({
 
 var styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    backgroundColor: '#e57373'
   },
   middle: {
     flex: 1,

@@ -40,6 +40,8 @@ module.exports = React.createClass({
     return (
       <Component
         route={route}
+        uid={route.uid}
+        email={route.email}
         navigator={navigator}
       />
     )

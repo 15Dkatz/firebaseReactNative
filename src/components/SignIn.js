@@ -12,15 +12,14 @@ import {
 import Firebase from 'firebase';
 let ref = new Firebase("https://reactfireitems.firebaseio.com/");
 
-
-
 //create the sign in page that routes from firebase
 module.exports = React.createClass({
   getInitialState() {
     return {
       result: '...',
       email: '',
-      password: ''
+      password: '',
+      userData: {}
     }
   },
 
@@ -51,7 +50,10 @@ module.exports = React.createClass({
           />
           <View style={styles.buttons}>
             <TouchableOpacity>
-              <Text style={styles.btnText}>
+              <Text
+                style={styles.btnText}
+                onPress={this.signIn}
+              >
                 Sign In
               </Text>
             </TouchableOpacity>
@@ -69,6 +71,32 @@ module.exports = React.createClass({
         </View>
       </View>
     );
+  },
+
+
+  // unfortunately you cannot pass objects as React child so you must pass each
+  // key that you need from userData individually
+  signIn() {
+    console.log('email:', this.state.email, 'password:', this.state.password);
+    ref.authWithPassword({
+      "email": this.state.email,
+      "password": this.state.password
+    }, function(error, userData) {
+      if (error) {
+        console.log("Login Failed!", error);
+        this.setState({result: "Login Failed:" + error});
+      } else {
+        console.log("Authenticated Successfully: ", userData);
+        this.setState({result: "userId: " + userData.uid});
+        this.setState({userData})
+        this.props.navigator.push({
+          name: 'home',
+          uid: this.state.userData.uid,
+          email: userData.auth.token.email
+        })
+      }
+    }.bind(this))
+
   },
 
   signUp() {
@@ -94,8 +122,15 @@ module.exports = React.createClass({
       } else {
         console.log("Successfully created user account:", userData)
         this.setState({result: "uid: " + userData.uid})
+        this.setState({userData})
+        this.props.navigator.push({
+          name: 'home',
+          uid: this.state.userData.uid,
+          email: userData.auth.token.email
+        })
       }
     }.bind(this))
+    //use resulting userData
   }
 });
 
